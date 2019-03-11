@@ -12,7 +12,7 @@ app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev', {
-  skip: () => app.get('env') === 'test'
+  skip: () => app.get('env') === 'test',
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,7 +33,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   res
     .status(err.status || 500)
     .render('error', {
-      message: err.message
+      message: err.message,
     });
 });
 

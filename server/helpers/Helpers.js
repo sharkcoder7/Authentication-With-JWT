@@ -4,23 +4,24 @@ class Helpers {
    * @param {Array} a items The array containing the items.
    */
   static shuffle(array) {
-    let counter = array.length;
+    const tempArray = array;
+    let counter = tempArray.length;
 
     // While there are elements in the array
     while (counter > 0) {
       // Pick a random index
-      let index = Math.floor(Math.random() * counter);
+      const index = Math.floor(Math.random() * counter);
 
       // Decrease counter by 1
-      counter--;
+      counter -= 1;
 
       // And swap the last element with it
-      let temp = array[counter];
-      array[counter] = array[index];
-      array[index] = temp;
+      const temp = tempArray[counter];
+      tempArray[counter] = tempArray[index];
+      tempArray[index] = temp;
     }
 
-    return array;
+    return tempArray;
   }
 }
 
