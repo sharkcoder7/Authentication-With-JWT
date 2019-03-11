@@ -1,9 +1,25 @@
 import HttpStatus from 'http-status-codes';
 
+import logger from '../config/logger';
+
 class ErrorHelpers {
-  static sendErrorMessage(errorCode, msg, e) {
-    const httpErrorCode = errorCode;
-    return `///// Error code: ${httpErrorCode} - ${HttpStatus.getStatusText(httpErrorCode)} ////// ${msg}\n\n${e || ''}`;
+
+  static sendErrorMessage(res, errorCode, message) {
+    const error = {
+      code: errorCode,
+      errorCodeMessage: HttpStatus.getStatusText(errorCode),
+      message,
+    };
+    return res.status(errorCode).json(error);
+  }
+
+  static logErrorMessage(errorCode, message) {
+    const error = {
+      code: errorCode,
+      errorCodeMessage: HttpStatus.getStatusText(errorCode),
+      message,
+    };
+    return logger.error(error);
   }
 }
 

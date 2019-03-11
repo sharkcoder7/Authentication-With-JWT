@@ -32,3 +32,4 @@ describe('GET /404', () => {
     await request(app).get('/notfound').expect(HttpStatus.NOT_FOUND);
   });
 });
+

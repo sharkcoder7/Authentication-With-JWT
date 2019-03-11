@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 
-import { generateAuthToken, trimUserResponse } from './../utils/user-utils';
+import {
+  generateAuthToken,
+  trimUserResponse,
+  findByToken,
+} from './../utils/user-utils';
 
 const userDocument = {
   email: {
@@ -36,6 +40,7 @@ const UserSchema = new mongoose.Schema(userDocument);
 
 UserSchema.methods.trimUserResponse = trimUserResponse;
 UserSchema.methods.generateAuthToken = generateAuthToken;
+UserSchema.statics.findByToken = findByToken;
 
 const User = mongoose.model('User', UserSchema);
 

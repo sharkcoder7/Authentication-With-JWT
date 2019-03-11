@@ -1,6 +1,5 @@
 import HttpStatus from 'http-status-codes';
 
-import logger from './logger';
 import ErrorHelpers from '../helpers/ErrorHelpers';
 import UserRoutes from '../api/user/routes/user-routes';
 
@@ -11,21 +10,17 @@ class Routes {
     app.use('/', router);
 
     // Catch 404 and forward to error handler
-    app.use((req, res, next) => {
+    app.use((req, res) => {
       const err = new Error('Page Not Found');
-      err.status = HttpStatus.NOT_FOUND;
-      res.status(HttpStatus.NOT_FOUND).send(ErrorHelpers.sendErrorMessage(HttpStatus.NOT_FOUND, err));
-      logger.warn(ErrorHelpers.sendErrorMessage(HttpStatus.NOT_FOUND, err.message));
-      next(err);
+      ErrorHelpers.logErrorMessage(HttpStatus.NOT_FOUND, err.message);
+      ErrorHelpers.sendErrorMessage(res, HttpStatus.NOT_FOUND, err.message);
     });
 
 // Error handler
-    app.use((req, res, next) => {
-      const err = new Error('Uncaught error. That is pretty bad.');
-      err.status = HttpStatus.INTERNAL_SERVER_ERROR;
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(ErrorHelpers.sendErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, err));
-      logger.warn(ErrorHelpers.sendErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, err.message));
-      next(err);
+    app.use((req, res) => {
+      const err = new Error('Uncaught error. Yep, That is pretty bad.');
+      ErrorHelpers.logErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, err.message);
+      ErrorHelpers.sendErrorMessage(res, HttpStatus.INTERNAL_SERVER_ERROR, err.message);
     });
   }
 }
