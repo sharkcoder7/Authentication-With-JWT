@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 
-const User = mongoose.model('User', {
+import { generateAuthToken, trimUserResponse } from './../utils/user-utils';
+
+const userDocument = {
   email: {
     type: String,
     required: true,
@@ -9,8 +11,8 @@ const User = mongoose.model('User', {
     minlength: 1,
     unique: true,
     validate: {
-      validator: validator.isEmail,
-      message: '{VALUE} is not a valid email',
+      validator: value => validator.isEmail(value),
+      message: '{VALUE} is not a valid Email',
     },
   },
   password: {
@@ -28,6 +30,13 @@ const User = mongoose.model('User', {
       required: true,
     },
   }],
-});
+};
+
+const UserSchema = new mongoose.Schema(userDocument);
+
+UserSchema.methods.trimUserResponse = trimUserResponse;
+UserSchema.methods.generateAuthToken = generateAuthToken;
+
+const User = mongoose.model('User', UserSchema);
 
 export default User;

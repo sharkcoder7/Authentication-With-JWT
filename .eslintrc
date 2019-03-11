@@ -7,6 +7,8 @@
   },
   "extends": "airbnb-base",
   "rules": {
-    "max-len": [2, 160, 2, {"ignoreUrls": true}]
+    "max-len": [2, 160, 2, {"ignoreUrls": true}],
+    "no-underscore-dangle": 0,
+    "func-names": ["error", "as-needed"]
   }
 }
