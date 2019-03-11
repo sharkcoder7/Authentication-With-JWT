@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 
 class MongooseConfig {
-  static init(config) {
-    const URL = config.MONGODB_URI;
+  static init(MONGODB_URI) {
+    const URL = MONGODB_URI;
 
     mongoose.connect(URL);
 
