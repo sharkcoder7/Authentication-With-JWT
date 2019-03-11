@@ -1,4 +1,4 @@
-import app from './src/app';
+import app from './app';
 
 const ENV = process.env.NODE_ENV || 'development';
 const config = require('./../env.json')[ENV];
