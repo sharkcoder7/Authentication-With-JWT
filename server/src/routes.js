@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import HttpStatus from 'http-status-codes';
+import ErrorHelpers from '../helpers/ErrorHelpers';
 
 const routes = Router();
 
@@ -18,7 +20,7 @@ routes.get('/', (req, res) => {
  * create different/better error handlers depending on
  * your use case.
  */
-routes.get('/list', (req, res, next) => {
+routes.get('/list', (req, res) => {
   const { title } = req.query;
 
   if (title == null || title === '') {
@@ -26,7 +28,7 @@ routes.get('/list', (req, res, next) => {
     // or 422 Unprocessable Entity instead of the default 500 of
     // the global error handler (e.g check out https://github.com/kbariotis/throw.js).
     // This is just for demo purposes.
-    next(new Error('The "title" parameter is required'));
+    res.status(HttpStatus.BAD_REQUEST).send(ErrorHelpers.sendErrorMessage(HttpStatus.BAD_REQUEST, 'The "title" parameter is required'));
     return;
   }
 

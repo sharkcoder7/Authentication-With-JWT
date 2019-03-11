@@ -1,4 +1,4 @@
-import Helpers from './Helpers';
+import Helpers from '../Helpers';
 
 describe('Helpers', () => {
   const array1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

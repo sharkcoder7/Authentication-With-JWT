@@ -1,9 +1,15 @@
+import HttpStatus from 'http-status-codes';
 import request from 'supertest';
+import mongoose from 'mongoose';
 import app from '../src/app';
+
+afterAll(() => {
+  mongoose.disconnect();
+});
 
 describe('GET /', () => {
   it('should render properly', async () => {
-    await request(app).get('/').expect(200);
+    await request(app).get('/').expect(HttpStatus.OK);
   });
 });
 
@@ -12,17 +18,17 @@ describe('GET /list', () => {
     await request(app)
       .get('/list')
       .query({ title: 'List title' })
-      .expect(200);
+      .expect(HttpStatus.OK);
   });
 
   it('should error without a valid parameter', async () => {
-    await request(app).get('/list').expect(500);
+    await request(app).get('/list').expect(HttpStatus.BAD_REQUEST);
   });
 });
 
 describe('GET /404', () => {
   it('should return 404 for non-existent URLs', async () => {
-    await request(app).get('/404').expect(404);
-    await request(app).get('/notfound').expect(404);
+    await request(app).get('/404').expect(HttpStatus.NOT_FOUND);
+    await request(app).get('/notfound').expect(HttpStatus.NOT_FOUND);
   });
 });
