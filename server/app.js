@@ -12,7 +12,7 @@ const config = require('../env.json')[ENV];
 
 const app = express();
 app.disable('x-powered-by');
-app.use(morgan('combined',
+app.use(morgan('dev',
   {
     stream: { write: message => logger.info(message) },
   },
