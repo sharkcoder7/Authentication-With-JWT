@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
 
-class DBConfig {
+class MongooseConfig {
   static init(config) {
     const URL = config.MONGODB_URI;
 
@@ -38,4 +38,4 @@ class DBConfig {
   }
 }
 
-export default DBConfig;
+export default MongooseConfig;

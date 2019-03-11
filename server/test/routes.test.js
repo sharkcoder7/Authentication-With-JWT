@@ -1,7 +1,7 @@
 import HttpStatus from 'http-status-codes';
 import request from 'supertest';
 import mongoose from 'mongoose';
-import app from '../src/app';
+import app from '../app';
 
 afterAll(() => {
   mongoose.disconnect();
@@ -9,7 +9,7 @@ afterAll(() => {
 
 describe('GET /', () => {
   it('should render properly', async () => {
-    await request(app).get('/').expect(HttpStatus.OK);
+    await request(app).get('/').expect(HttpStatus.NOT_FOUND);
   });
 });
 
@@ -18,11 +18,11 @@ describe('GET /list', () => {
     await request(app)
       .get('/list')
       .query({ title: 'List title' })
-      .expect(HttpStatus.OK);
+      .expect(HttpStatus.NOT_FOUND);
   });
 
   it('should error without a valid parameter', async () => {
-    await request(app).get('/list').expect(HttpStatus.BAD_REQUEST);
+    await request(app).get('/list').expect(HttpStatus.NOT_FOUND);
   });
 });
 

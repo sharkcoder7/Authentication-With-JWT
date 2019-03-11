@@ -26,11 +26,14 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "http-status-codes": "^1.1.6",
+    "lodash": "^4.17.4",
     "mongoose": "^4.11.0",
     "morgan": "^1.8.2",
     "pug": "^2.0.0-rc.2",
     "rimraf": "^2.6.1",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "validator": "^8.0.0",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -81,7 +84,11 @@
       "!**/dist/**"
     ],
     "testEnvironment": "node",
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec|shallow))\\.jsx?$"
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec|shallow))\\.jsx?$",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
   },
   "bugs": {
     "url": "https://github.com/vmasto/express-babel/issues"

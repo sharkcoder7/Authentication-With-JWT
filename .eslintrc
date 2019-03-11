@@ -5,5 +5,8 @@
     "es6": true,
     "jest": true
   },
-  "extends": "airbnb-base"
+  "extends": "airbnb-base",
+  "rules": {
+    "max-len": [2, 160, 2, {"ignoreUrls": true}]
+  }
 }
