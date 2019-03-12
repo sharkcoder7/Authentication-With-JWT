@@ -12,8 +12,8 @@
   "scripts": {
     "prestart": "npm run -s build",
     "start-build": "NODE_ENV=production node dist/index.js",
-    "start-debug": "node $NODE_DEBUG_OPTION server/index.js --exec \"node -r dotenv/config -r babel-register\"",
-    "start": "nodemon server/index.js --exec \"node -r dotenv/config -r babel-register\"",
+    "start-debug": "nodemon $NODE_DEBUG_OPTION server/index.js --exec \"node -r dotenv/config -r babel-register\"",
+    "start": "nodemon $NODE_DEBUG_OPTION server/index.js --exec \"node -r dotenv/config -r babel-register\"",
     "clean": "rimraf dist",
     "build": "npm run clean && mkdir -p dist && babel server -s -D -d dist",
     "test-watch": "export NODE_ENV=test || SET \"NODE_ENV=test\" && jest --watch --verbose",

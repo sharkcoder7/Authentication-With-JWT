@@ -73,10 +73,22 @@ const hashPassword = function(next) {
   }
 };
 
+const removeToken = function(token) {
+  const user = this;
+  return user.update({
+    $pull: {
+      tokens: {
+        token,
+      },
+    },
+  });
+};
+
 export {
   generateAuthToken,
   trimUserResponse,
   findByToken,
   hashPassword,
   findByCredentials,
+  removeToken,
 };

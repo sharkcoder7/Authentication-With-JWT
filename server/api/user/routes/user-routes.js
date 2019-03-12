@@ -13,8 +13,14 @@ class UserRoutes {
       .get(UserController.authenticateUser);
 
     router
+      .route('/users/me/token')
+      .all(UserMiddleware.authenticate)
+      .delete(UserController.logOut);
+
+
+    router
       .route('/users/login')
-      .post(UserController.login);
+      .post(UserController.signIn);
   }
 }
 

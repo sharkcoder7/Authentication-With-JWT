@@ -11,7 +11,7 @@ class UserMiddleware {
         return Promise.reject(new Error('We could not find you in the db.'));
       }
       // Modify request object to be used in further methods.
-      req.user = user.trimUserResponse(user);
+      req.user = user;
       req.token = token;
       return next();
     }).catch((e) => {
