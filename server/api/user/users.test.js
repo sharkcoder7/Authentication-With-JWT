@@ -19,7 +19,7 @@ describe('POST users/', () => {
       password: 'testPasword',
     };
     await request(app)
-      .post(`/users${API.SIGNUP}`)
+      .post(`/api/users${API.SIGNUP}`)
       .send(user)
       .expect(HttpStatus.OK)
       .expect((res) => {
@@ -36,7 +36,7 @@ describe('POST users/', () => {
       password: 'testPasword',
     };
     await request(app)
-      .post(`/users${API.SIGNUP}`)
+      .post(`/api/users${API.SIGNUP}`)
       .send(mockUser)
       .expect(HttpStatus.OK);
     await User.findOne({ email: mockUser.email }).then((user) => {
@@ -51,7 +51,7 @@ describe('POST users/', () => {
       password: 'testPasword',
     };
     await request(app)
-      .post(`/users${API.SIGNUP}`)
+      .post(`/api/users${API.SIGNUP}`)
       .send(user)
       .expect(HttpStatus.BAD_REQUEST)
       .expect((res) => {
@@ -67,7 +67,7 @@ describe('POST users/', () => {
       password: 'test',
     };
     await request(app)
-      .post(`/users${API.SIGNUP}`)
+      .post(`/api/users${API.SIGNUP}`)
       .send(user)
       .expect(HttpStatus.BAD_REQUEST)
       .expect((res) => {
@@ -83,7 +83,7 @@ describe('POST users/', () => {
       password: 'testPasword',
     };
     await request(app)
-      .post(`/users${API.SIGNUP}`)
+      .post(`/api/users${API.SIGNUP}`)
       .send(user)
       .expect(HttpStatus.BAD_REQUEST)
       .expect((res) => {
@@ -98,7 +98,7 @@ describe('GET users/me', () => {
   it('should return user if authenticated', async () => {
     const user = users[0];
     await request(app)
-      .get(`/users${API.ME}`)
+      .get(`/api/users${API.ME}`)
       .set('x-auth', user.tokens[0].token)
       .expect(HttpStatus.OK)
       .expect((res) => {
@@ -110,7 +110,7 @@ describe('GET users/me', () => {
   it('should return 401 if token access is wrong', async () => {
     const user = users[1];
     await request(app)
-      .get(`/users${API.ME}`)
+      .get(`/api/users${API.ME}`)
       .set('x-auth', user.tokens[0].token)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -121,7 +121,7 @@ describe('GET users/me', () => {
   it('should return 401 if token is malformed', async () => {
     const user = users[2];
     await request(app)
-      .get(`/users${API.ME}`)
+      .get(`/api/users${API.ME}`)
       .set('x-auth', user.tokens[0].token)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -132,7 +132,7 @@ describe('GET users/me', () => {
   it('should return 401 if no token', async () => {
     const user = users[2];
     await request(app)
-      .get(`/users${API.ME}`)
+      .get(`/api/users${API.ME}`)
       .set('x-auth', user.tokens[0].token)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -148,7 +148,7 @@ describe('POST users/login', () => {
       password: users[0].password,
     };
     await request(app)
-      .post(`/users${API.SIGNIN}`)
+      .post(`/api/users${API.SIGNIN}`)
       .send(body)
       .expect(HttpStatus.OK)
       .expect((res) => {
@@ -165,7 +165,7 @@ describe('POST users/login', () => {
       password: users[0].password,
     };
     await request(app)
-      .post(`/users${API.SIGNIN}`)
+      .post(`/api/users${API.SIGNIN}`)
       .send(body)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -180,7 +180,7 @@ describe('POST users/login', () => {
       password: 'test',
     };
     await request(app)
-      .post(`/users${API.SIGNIN}`)
+      .post(`/api/users${API.SIGNIN}`)
       .send(body)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -195,7 +195,7 @@ describe('POST users/login', () => {
       password: 'testPassword',
     };
     await request(app)
-      .post(`/users${API.SIGNIN}`)
+      .post(`/api/users${API.SIGNIN}`)
       .send(body)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -209,7 +209,7 @@ describe('DELETE users/me/token', () => {
   it('should delete the token', async () => {
     const mockUser = users[0];
     await request(app)
-      .delete(`/users${API.TOKEN}`)
+      .delete(`/api/users${API.TOKEN}`)
       .set('x-auth', mockUser.tokens[0].token)
       .expect(HttpStatus.OK)
       .expect((res) => {
@@ -223,7 +223,7 @@ describe('DELETE users/me/token', () => {
   it('should not delete the token if wrong access', async () => {
     const mockUser = users[0];
     await request(app)
-      .delete(`/users${API.TOKEN}`)
+      .delete(`/api/users${API.TOKEN}`)
       .set('wrong-header', mockUser.tokens[0].token)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -237,7 +237,7 @@ describe('DELETE users/me/token', () => {
   it('should not delete the token if wrong token', async () => {
     const mockUser = users[0];
     await request(app)
-      .delete(`/users${API.TOKEN}`)
+      .delete(`/api/users${API.TOKEN}`)
       .set('wrong-header', 'wrong token')
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {

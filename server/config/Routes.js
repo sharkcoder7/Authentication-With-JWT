@@ -7,7 +7,7 @@ import UserRoutes from '../api/user/routes/user-routes';
 class Routes {
   static init(app, router) {
     UserRoutes.init(router);
-    app.use('/users', router);
+    app.use('/api/users', router);
 
     // Catch 404 and forward to error handler
     app.use((req, res) => {
