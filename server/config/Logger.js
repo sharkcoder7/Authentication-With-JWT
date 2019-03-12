@@ -4,6 +4,18 @@ import winston from 'winston';
 const ENV = process.env.NODE_ENV || 'development';
 
 const logger = new winston.Logger({
+  levels: {
+    trace: 9,
+    input: 8,
+    verbose: 7,
+    prompt: 6,
+    debug: 5,
+    info: 4,
+    data: 3,
+    help: 2,
+    warn: 1,
+    error: 0,
+  },
   colors: {
     trace: 'magenta',
     input: 'grey',
@@ -21,7 +33,7 @@ const logger = new winston.Logger({
 });
 
 logger.add(winston.transports.Console, {
-  level: 'silly',
+  level: 'trace',
   handleExceptions: true,
   json: false,
   colorize: true,

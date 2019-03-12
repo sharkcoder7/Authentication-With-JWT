@@ -12,6 +12,7 @@
   "scripts": {
     "prestart": "npm run -s build",
     "start-build": "NODE_ENV=production node dist/index.js",
+    "start-debug": "node $NODE_DEBUG_OPTION server/index.js --exec \"node -r dotenv/config -r babel-register\"",
     "start": "nodemon server/index.js --exec \"node -r dotenv/config -r babel-register\"",
     "clean": "rimraf dist",
     "build": "npm run clean && mkdir -p dist && babel server -s -D -d dist",
@@ -32,6 +33,7 @@
     "http-status-codes": "^1.1.6",
     "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
+    "mongodb": "^2.2.30",
     "mongoose": "^4.11.0",
     "morgan": "^1.8.2",
     "pug": "^2.0.0-rc.2",
