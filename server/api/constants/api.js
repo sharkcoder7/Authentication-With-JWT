@@ -1,5 +1,5 @@
 const API = {
-  SIGNUP: '',
+  SIGNUP: '/signup',
   SIGNIN: '/login',
   ME: '/me',
   TOKEN: '/me/token',
