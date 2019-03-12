@@ -1,25 +1,26 @@
 import UserController from '../controllers/user-controller';
 import UserMiddleware from '../middlewares/UserMiddleware';
+import API from '../../constants/api';
 
 class UserRoutes {
   static init(router) {
     router
-      .route('/users')
+      .route(API.SIGNUP)
       .post(UserController.signUp);
 
     router
-      .route('/users/me')
+      .route(API.ME)
       .all(UserMiddleware.authenticate)
       .get(UserController.authenticateUser);
 
     router
-      .route('/users/me/token')
+      .route(API.TOKEN)
       .all(UserMiddleware.authenticate)
       .delete(UserController.logOut);
 
 
     router
-      .route('/users/login')
+      .route(API.SIGNIN)
       .post(UserController.signIn);
   }
 }

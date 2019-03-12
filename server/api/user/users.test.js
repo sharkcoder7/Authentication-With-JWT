@@ -4,6 +4,7 @@ import request from 'supertest';
 
 import app from '../../app';
 import User from './models/User';
+import API from '../constants/api';
 import { users, populateUsers } from '../../test/seed/seed';
 
 beforeEach(populateUsers);
@@ -18,7 +19,7 @@ describe('POST users/', () => {
       password: 'testPasword',
     };
     await request(app)
-      .post('/users')
+      .post(`/users${API.SIGNUP}`)
       .send(user)
       .expect(HttpStatus.OK)
       .expect((res) => {
@@ -35,7 +36,7 @@ describe('POST users/', () => {
       password: 'testPasword',
     };
     await request(app)
-      .post('/users')
+      .post(`/users${API.SIGNUP}`)
       .send(mockUser)
       .expect(HttpStatus.OK);
     await User.findOne({ email: mockUser.email }).then((user) => {
@@ -50,7 +51,7 @@ describe('POST users/', () => {
       password: 'testPasword',
     };
     await request(app)
-      .post('/users')
+      .post(`/users${API.SIGNUP}`)
       .send(user)
       .expect(HttpStatus.BAD_REQUEST)
       .expect((res) => {
@@ -66,7 +67,7 @@ describe('POST users/', () => {
       password: 'test',
     };
     await request(app)
-      .post('/users')
+      .post(`/users${API.SIGNUP}`)
       .send(user)
       .expect(HttpStatus.BAD_REQUEST)
       .expect((res) => {
@@ -82,7 +83,7 @@ describe('POST users/', () => {
       password: 'testPasword',
     };
     await request(app)
-      .post('/users')
+      .post(`/users${API.SIGNUP}`)
       .send(user)
       .expect(HttpStatus.BAD_REQUEST)
       .expect((res) => {
@@ -97,7 +98,7 @@ describe('GET users/me', () => {
   it('should return user if authenticated', async () => {
     const user = users[0];
     await request(app)
-      .get('/users/me')
+      .get(`/users${API.ME}`)
       .set('x-auth', user.tokens[0].token)
       .expect(HttpStatus.OK)
       .expect((res) => {
@@ -109,7 +110,7 @@ describe('GET users/me', () => {
   it('should return 401 if token access is wrong', async () => {
     const user = users[1];
     await request(app)
-      .get('/users/me')
+      .get(`/users${API.ME}`)
       .set('x-auth', user.tokens[0].token)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -120,7 +121,7 @@ describe('GET users/me', () => {
   it('should return 401 if token is malformed', async () => {
     const user = users[2];
     await request(app)
-      .get('/users/me')
+      .get(`/users${API.ME}`)
       .set('x-auth', user.tokens[0].token)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -131,7 +132,7 @@ describe('GET users/me', () => {
   it('should return 401 if no token', async () => {
     const user = users[2];
     await request(app)
-      .get('/users/me')
+      .get(`/users${API.ME}`)
       .set('x-auth', user.tokens[0].token)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -140,14 +141,14 @@ describe('GET users/me', () => {
   });
 });
 
-describe('GET users/login', () => {
+describe('POST users/login', () => {
   it('should login user and return auth token', async () => {
     const body = {
       email: users[0].email,
       password: users[0].password,
     };
     await request(app)
-      .post('/users/login')
+      .post(`/users${API.SIGNIN}`)
       .send(body)
       .expect(HttpStatus.OK)
       .expect((res) => {
@@ -164,7 +165,7 @@ describe('GET users/login', () => {
       password: users[0].password,
     };
     await request(app)
-      .post('/users/login')
+      .post(`/users${API.SIGNIN}`)
       .send(body)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -179,7 +180,7 @@ describe('GET users/login', () => {
       password: 'test',
     };
     await request(app)
-      .post('/users/login')
+      .post(`/users${API.SIGNIN}`)
       .send(body)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
@@ -194,12 +195,56 @@ describe('GET users/login', () => {
       password: 'testPassword',
     };
     await request(app)
-      .post('/users/login')
+      .post(`/users${API.SIGNIN}`)
       .send(body)
       .expect(HttpStatus.UNAUTHORIZED)
       .expect((res) => {
         expect(res.headers['x-auth']).toBeUndefined();
         expect(res.body.code).toBe(HttpStatus.UNAUTHORIZED);
       });
+  });
+});
+
+describe('DELETE users/me/token', () => {
+  it('should delete the token', async () => {
+    const mockUser = users[0];
+    await request(app)
+      .delete(`/users${API.TOKEN}`)
+      .set('x-auth', mockUser.tokens[0].token)
+      .expect(HttpStatus.OK)
+      .expect((res) => {
+        expect(res.body.code).toBe(HttpStatus.OK);
+      });
+    await User.findOne({ email: mockUser.email }).then((user) => {
+      expect(user.tokens.token).toBeUndefined();
+    });
+  });
+
+  it('should not delete the token if wrong access', async () => {
+    const mockUser = users[0];
+    await request(app)
+      .delete(`/users${API.TOKEN}`)
+      .set('wrong-header', mockUser.tokens[0].token)
+      .expect(HttpStatus.UNAUTHORIZED)
+      .expect((res) => {
+        expect(res.body.code).toBe(HttpStatus.UNAUTHORIZED);
+      });
+    await User.findOne({ email: mockUser.email }).then((user) => {
+      expect(user.tokens[0].token).toBeDefined();
+    });
+  });
+
+  it('should not delete the token if wrong token', async () => {
+    const mockUser = users[0];
+    await request(app)
+      .delete(`/users${API.TOKEN}`)
+      .set('wrong-header', 'wrong token')
+      .expect(HttpStatus.UNAUTHORIZED)
+      .expect((res) => {
+        expect(res.body.code).toBe(HttpStatus.UNAUTHORIZED);
+      });
+    await User.findOne({ email: mockUser.email }).then((user) => {
+      expect(user.tokens[0].token).toBeDefined();
+    });
   });
 });
