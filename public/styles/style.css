@@ -1,8 +1,27 @@
 body {
+  background-color: #3E606F;
+  background-attachment: fixed;
   padding: 50px;
-  font: 14px sans-serif;
+  font: 18px sans-serif;
+  color: #EFECCA;
+  height: 100vh;
+}
+
+h1 {
+  font-size: 5rem;
 }
 
 a {
-  color: #00B7FF;
+  color: #91AA9D;
+}
+
+.label-form {
+  display: block;
+  margin-top: .4rem;
+}
+
+.label-form input {
+  margin-top: .4rem;
+  width: 300px;
+  padding: .5rem 1rem;
 }

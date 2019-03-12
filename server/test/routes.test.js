@@ -9,7 +9,7 @@ afterAll(() => {
 
 describe('GET /', () => {
   it('should render properly', async () => {
-    await request(app).get('/').expect(HttpStatus.NOT_FOUND);
+    await request(app).get('/').expect(HttpStatus.OK);
   });
 });
 

@@ -9,6 +9,14 @@ class Routes {
     UserRoutes.init(router);
     app.use('/api/users', router);
 
+    app.use('/', router);
+    router
+      .route('/')
+      .get((req, res) => {
+        res.render('login', { title: 'Express ES6 login boilerplate' });
+      });
+
+
     // Catch 404 and forward to error handler
     app.use((req, res) => {
       const err = new Error('Page Not Found');
