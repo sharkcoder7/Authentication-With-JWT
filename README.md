@@ -1,10 +1,10 @@
-# jwt Authentication implementation with Express and mongodb
+# jwt Authentication implementation with Express and Mongodb
 
 Feel free to comment, contribute, and open merge requests :)
 
 # Install
 ```
-$ git clone
+$ git clone https://github.com/deneb0618/Authentication-With-JWT.git
 $ cd express-login
 $ npm install
 ```
