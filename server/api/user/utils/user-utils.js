@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
-
+import bcrypt from 'bcryptjs';
 import User from '../models/User';
+import logger from '../../../config/logger';
 
 const ENV = process.env.NODE_ENV || 'development';
 const config = require('../../../../env.json')[ENV];
@@ -35,4 +36,30 @@ const findByToken = (token) => {
   }
 };
 
-export { generateAuthToken, trimUserResponse, findByToken };
+const hashPassword = function(next) {
+  const user = this;
+  // Only do something if password has been modified
+  if (user.isModified('password')) {
+    bcrypt.genSalt(10, (genSaltErr, salt) => {
+      if (genSaltErr) {
+        return logger.error(genSaltErr);
+      }
+      return bcrypt.hash(user.password, salt, (hashErr, hash) => {
+        if (hashErr) {
+          return logger.error(hashErr);
+        }
+        user.password = hash;
+        return next();
+      });
+    });
+  } else {
+    next();
+  }
+};
+
+export {
+  generateAuthToken,
+  trimUserResponse,
+  findByToken,
+  hashPassword,
+};

@@ -10,7 +10,7 @@ class UserRoutes {
     router
       .route('/users/me')
       .all(UserMiddleware.authenticate)
-      .get(UserController.authenticate);
+      .get(UserController.authenticateUser);
   }
 }
 

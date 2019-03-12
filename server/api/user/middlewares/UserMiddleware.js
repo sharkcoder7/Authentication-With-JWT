@@ -10,6 +10,7 @@ class UserMiddleware {
       if (!user) {
         return Promise.reject(new Error('We could not find you in the db.'));
       }
+      // Modify request object to be used in further methods.
       req.user = user.trimUserResponse(user);
       req.token = token;
       return next();

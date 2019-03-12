@@ -20,7 +20,7 @@ class UserController {
     });
   }
 
-  static authenticate(req, res) {
+  static authenticateUser(req, res) {
     res.send(req.user);
   }
 }

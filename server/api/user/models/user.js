@@ -5,6 +5,7 @@ import {
   generateAuthToken,
   trimUserResponse,
   findByToken,
+  hashPassword,
 } from './../utils/user-utils';
 
 const userDocument = {
@@ -38,6 +39,7 @@ const userDocument = {
 
 const UserSchema = new mongoose.Schema(userDocument);
 
+UserSchema.pre('save', hashPassword);
 UserSchema.methods.trimUserResponse = trimUserResponse;
 UserSchema.methods.generateAuthToken = generateAuthToken;
 UserSchema.statics.findByToken = findByToken;
