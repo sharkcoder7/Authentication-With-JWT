@@ -36,6 +36,22 @@ const findByToken = (token) => {
   }
 };
 
+const findByCredentials = (email, password) => (
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new Error('Email not in db'));
+      }
+      return bcrypt.compare(password, user.password)
+        .then((isPasswordMatching) => {
+          if (isPasswordMatching === false) {
+            return Promise.reject(new Error('Passwords don\'t match'));
+          }
+          return user;
+        });
+    })
+);
+
 const hashPassword = function(next) {
   const user = this;
   // Only do something if password has been modified
@@ -62,4 +78,5 @@ export {
   trimUserResponse,
   findByToken,
   hashPassword,
+  findByCredentials,
 };

@@ -11,6 +11,10 @@ class UserRoutes {
       .route('/users/me')
       .all(UserMiddleware.authenticate)
       .get(UserController.authenticateUser);
+
+    router
+      .route('/users/login')
+      .post(UserController.login);
   }
 }
 

@@ -6,6 +6,7 @@ import {
   trimUserResponse,
   findByToken,
   hashPassword,
+  findByCredentials,
 } from './../utils/user-utils';
 
 const userDocument = {
@@ -43,6 +44,7 @@ UserSchema.pre('save', hashPassword);
 UserSchema.methods.trimUserResponse = trimUserResponse;
 UserSchema.methods.generateAuthToken = generateAuthToken;
 UserSchema.statics.findByToken = findByToken;
+UserSchema.statics.findByCredentials = findByCredentials;
 
 const User = mongoose.model('User', UserSchema);
 

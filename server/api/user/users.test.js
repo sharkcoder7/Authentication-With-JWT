@@ -139,3 +139,67 @@ describe('GET users/me', () => {
       });
   });
 });
+
+describe('GET users/login', () => {
+  it('should login user and return auth token', async () => {
+    const body = {
+      email: users[0].email,
+      password: users[0].password,
+    };
+    await request(app)
+      .post('/users/login')
+      .send(body)
+      .expect(HttpStatus.OK)
+      .expect((res) => {
+        expect(res.headers['x-auth']).toBeDefined();
+        expect(res.body.email).toBe(body.email);
+        expect(res.body.password).toBeUndefined();
+        expect(res.body._id).toBeDefined();
+      });
+  });
+
+  it('should reject invalid login with no email', async () => {
+    const body = {
+      email: '',
+      password: users[0].password,
+    };
+    await request(app)
+      .post('/users/login')
+      .send(body)
+      .expect(HttpStatus.UNAUTHORIZED)
+      .expect((res) => {
+        expect(res.headers['x-auth']).toBeUndefined();
+        expect(res.body.code).toBe(HttpStatus.UNAUTHORIZED);
+      });
+  });
+
+  it('should reject invalid login with too short password', async () => {
+    const body = {
+      email: users[0].email,
+      password: 'test',
+    };
+    await request(app)
+      .post('/users/login')
+      .send(body)
+      .expect(HttpStatus.UNAUTHORIZED)
+      .expect((res) => {
+        expect(res.headers['x-auth']).toBeUndefined();
+        expect(res.body.code).toBe(HttpStatus.UNAUTHORIZED);
+      });
+  });
+
+  it('should reject invalid login with wrong password', async () => {
+    const body = {
+      email: users[0].email,
+      password: 'testPassword',
+    };
+    await request(app)
+      .post('/users/login')
+      .send(body)
+      .expect(HttpStatus.UNAUTHORIZED)
+      .expect((res) => {
+        expect(res.headers['x-auth']).toBeUndefined();
+        expect(res.body.code).toBe(HttpStatus.UNAUTHORIZED);
+      });
+  });
+});

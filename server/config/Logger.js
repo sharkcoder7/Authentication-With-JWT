@@ -3,7 +3,7 @@ import winston from 'winston';
 
 const ENV = process.env.NODE_ENV || 'development';
 
-const logger = new winston.Logger({
+const loggerOptions = {
   levels: {
     trace: 9,
     input: 8,
@@ -30,34 +30,64 @@ const logger = new winston.Logger({
   },
   emitErrs: true,
   exitOnError: false,
-});
+};
 
-logger.add(winston.transports.Console, {
+const loggerConsoleOptions = {
   level: 'trace',
   handleExceptions: true,
   json: false,
   colorize: true,
   prettyPrint: true,
-});
+};
 
-logger.add(winston.transports.File, {
-  level: 'info',
-  filename: path.join(__dirname, './../../logs/all-logs.log'),
-  handleExceptions: true,
-  json: true,
-  maxsize: 5242880, // 5MB
-  maxFiles: 5,
-  colorize: false,
-});
+const loggerFileOptions = () => {
+  let conf = {
+    level: 'info',
+    filename: path.join(__dirname, './../../logs/dev.log'),
+    handleExceptions: true,
+    json: true,
+    maxsize: 5242880, // 5MB
+    maxFiles: 5,
+    colorize: false,
+  };
+  if (ENV === 'prodcution') {
+    conf = {
+      level: 'info',
+      filename: path.join(__dirname, './../../logs/prod.log'),
+      handleExceptions: true,
+      json: true,
+      maxsize: 5242880, // 5MB
+      maxFiles: 5,
+      colorize: false,
+    };
+  } else if (ENV === 'test') {
+    conf = {
+      level: 'info',
+      filename: path.join(__dirname, './../../logs/test.log'),
+      handleExceptions: true,
+      json: true,
+      maxsize: 5242880, // 5MB
+      maxFiles: 5,
+      colorize: false,
+    };
+  }
+  return conf;
+};
 
 let log;
+let logger; // eslint-disable-line import/no-mutable-exports
 
 // @FIXME : What should be logged ? and when ?
-if (ENV !== 'development') {
+if (ENV !== 'test') {
+  logger = new winston.Logger(loggerOptions);
+  logger.add(winston.transports.Console, loggerConsoleOptions);
+  logger.add(winston.transports.File, loggerFileOptions());
   log = {
     write: message => logger.info(message),
   };
 } else {
+  logger = new winston.Logger(loggerOptions);
+  logger.add(winston.transports.File, loggerFileOptions());
   log = {
     write: message => logger.info(message),
   };
